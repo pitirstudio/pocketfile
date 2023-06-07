@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Скачивание файла</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    h1 {
+      text-align: center;
+      color: #555;
+      position: relative;
+    }
+    h1::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    form {
+      margin: 0 auto;
+      width: 50%;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #777;
+    }
+    input[type="file"] {
+      display: block;
+      margin-bottom: 20px;
+      padding: 6px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    a {
+      display: block;
+      margin-top: 20px;
+      font-size: 20px;
+      text-align: center;
+      color: #4CAF50;
+      text-decoration: none;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+    }
+    a:hover {
+      border-bottom: 2px solid #555;
+      color: #555;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Скачивание файла</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <label for="file">Выберите файл:</label>
+    <input type="file" id="file" name="file">
+    <button type="submit">Загрузить</button>
+  </form>
+
+  <?php
+  // Проверяем, что файл был загружен
+  if ($_FILES) {
+    $filename = $_FILES['file']['name'];
+    $tempfile = $_FILES['file']['tmp_name'];
+    // Перемещаем файл из временного хранилища и сохраняем его с уникальным именем
+    move_uploaded_file($tempfile, './uploads/' . uniqid() . $filename);
+    // Отображаем ссылку для скачивания файла
+    echo '<a href="./uploads/' . $filename . '">Скачать файл</a>';
+  }
+  ?>
+</body>
+</html>
